@@ -14,9 +14,33 @@ class BaseFormat(object):
 
     extension = None
     build_per_ratio = False
+    options_group = None
+    options = []
 
     def __init__(self, sprite):
         self.sprite = sprite
+
+
+    @classmethod
+    def populate_argument_parser(cls, parser):
+        group = parser.add_argument_group(cls.options_group)
+
+        for option in cls.options:
+            if option.type in (Option.STORE_TRUE, Option.STORE_FALSE, Option.STORE_CONST):
+                group.add_argument(*option.names,
+                                   dest=option.dest,
+                                   action='store_const',
+                                   const=option.const,
+                                   default=option.default,
+                                   metavar=option.metavar,
+                                   help=option.help)
+            else:
+                group.add_argument(*option.names,
+                                   dest=option.dest,
+                                   nargs=1 if option.type == Option.REQUIRED else '?',
+                                   type=unicode,
+                                   default=option.default,
+                                   help=option.help)
 
     def output_dir(self, *args, **kwargs):
         return self.sprite.config['{0}_dir'.format(self.format_label)]
@@ -54,10 +78,6 @@ class BaseFormat(object):
     def format_label(self):
         from glue.formats import formats
         return dict((v,k) for k, v in formats.iteritems())[self.__class__]
-
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        pass
 
     @classmethod
     def apply_parser_contraints(cls, parser, options):
