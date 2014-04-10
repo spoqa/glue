@@ -3,7 +3,7 @@ import os
 import codecs
 
 from glue import __version__
-from base import JinjaTextFormat
+from base import JinjaTextFormat, Option
 
 from ..exceptions import ValidationError
 
@@ -40,87 +40,82 @@ class CssFormat(JinjaTextFormat):
         {% endfor %}
         """
 
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("CSS format options")
+    options_group = 'CSS format options'
+    options = [
+        Option(
+            '--css',
+            dest='css_dir', type=Option.STORE_TRUE, environ='GLUE_CSS',
+            default=False,
+            metavar='DIR',
+            help='Generate CSS files and optionally where'
+        ),
+        Option(
+            '--namespace',
+            dest='css_namespace', type=Option.REQUIRED, environ='GLUE_CSS_NAMESPACE',
+            default='sprite',
+            help='Namespace for all css classes (default: sprite)'
+        ),
+        Option(
+            '--sprite-namespace',
+            dest='css_sprite_namespace', type=Option.REQUIRED, environ='GLUE_CSS_SPRITE_NAMESPACE',
+            default='{sprite_name}',
+            help='Namespace for all sprites (default: {sprite_name})'
+        ),
+        Option(
+            ('-u', '--url'),
+            dest='css_url', type=Option.REQUIRED, environ='GLUE_CSS_URL',
+            default='',
+            help='Prepend this string to the sprites path'
+        ),
+        Option(
+            '--cachebuster',
+            dest='css_cachebuster', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
+            default=False,
+            help="Use the sprite's sha1 first 6 characters as a queryarg everytime that file is referred from the css"
+        ),
+        Option(
+            '--cachebuster-filename',
+            dest='css_cachebuster_filename', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
+            default=False,
+            help="Append the sprite's sha first 6 characters to the output filename"
+        ),
+        Option(
+            '--cachebuster-filename-only-sprites',
+            dest='css_cachebuster_only_sprites', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER_ONLY_SPRITES',
+            default=False,
+            help='Only apply cachebuster to sprite images.'
+        ),
+        Option(
+            '--separator',
+            dest='css_separator', type=Option.REQUIRED, environ='GLUE_CSS_SEPARATOR',
+            default='-',
+            metavar='SEPARATOR',
+            help=("Customize the separator used to join CSS class names."
+                 "If you want to use camelCase use 'camelcase' as separator.")
+        ),
+        Option(
+            '--pseudo-class-separator',
+            dest='css_pseudo_class_separator', type=Option.REQUIRED, environ='GLUE_CSS_PSEUDO_CLASS_SEPARATOR',
+            default='__',
+            metavar='SEPARATOR',
+            help=('Customize the separator glue will use in order to'
+                  'determine the pseudo classes included into filenames.')
+        ),
+        Option(
+            '--css-template',
+            dest='css_template', type=Option.REQUIRED, environ='GLUE_CSS_TEMPLATE',
+            default=None,
+            metavar='DIR',
+            help='Template to use to generate the CSS output.'
+        ),
+        Option(
+            '--no-css',
+            dest='generate_css', type=Option.STORE_FALSE, environ='GLUE_GENERATE_CSS',
+            default=True,
+            help="Don't genereate CSS files."
+        ),
 
-        group.add_argument("--css",
-                           dest="css_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_CSS', False),
-                           metavar='DIR',
-                           help="Generate CSS files and optionally where")
-
-        group.add_argument("--namespace",
-                           dest="css_namespace",
-                           type=unicode,
-                           default=os.environ.get('GLUE_CSS_NAMESPACE', 'sprite'),
-                           help="Namespace for all css classes (default: sprite)")
-
-        group.add_argument("--sprite-namespace",
-                           dest="css_sprite_namespace",
-                           type=unicode,
-                           default=os.environ.get('GLUE_CSS_SPRITE_NAMESPACE',
-                                                  '{sprite_name}'),
-                           help="Namespace for all sprites (default: {sprite_name})")
-
-        group.add_argument("-u", "--url",
-                           dest="css_url",
-                           type=unicode,
-                           default=os.environ.get('GLUE_CSS_URL', ''),
-                           help="Prepend this string to the sprites path")
-
-        group.add_argument("--cachebuster",
-                           dest="css_cachebuster",
-                           default=os.environ.get('GLUE_CSS_CACHEBUSTER', False),
-                           action='store_true',
-                           help=("Use the sprite's sha1 first 6 characters as a "
-                                 "queryarg everytime that file is referred "
-                                 "from the css"))
-
-        group.add_argument("--cachebuster-filename",
-                           dest="css_cachebuster_filename",
-                           default=os.environ.get('GLUE_CSS_CACHEBUSTER', False),
-                           action='store_true',
-                           help=("Append the sprite's sha first 6 characters "
-                                 "to the output filename"))
-
-        group.add_argument("--cachebuster-filename-only-sprites",
-                           dest="css_cachebuster_only_sprites",
-                           default=os.environ.get('GLUE_CSS_CACHEBUSTER_ONLY_SPRITES', False),
-                           action='store_true',
-                           help=("Only apply cachebuster to sprite images."))
-
-        group.add_argument("--separator",
-                           dest="css_separator",
-                           type=unicode,
-                           default=os.environ.get('GLUE_CSS_SEPARATOR', '-'),
-                           metavar='SEPARATOR',
-                           help=("Customize the separator used to join CSS class "
-                                 "names. If you want to use camelCase use "
-                                 "'camelcase' as separator."))
-
-        group.add_argument("--pseudo-class-separator",
-                           dest="css_pseudo_class_separator",
-                           type=unicode,
-                           default=os.environ.get('GLUE_CSS_PSEUDO_CLASS_SEPARATOR', '__'),
-                           metavar='SEPARATOR',
-                           help=("Customize the separator glue will use in order "
-                                 "to determine the pseudo classes included into "
-                                 "filenames."))
-
-        group.add_argument("--css-template",
-                           dest="css_template",
-                           default=os.environ.get('GLUE_CSS_TEMPLATE', None),
-                           metavar='DIR',
-                           help="Template to use to generate the CSS output.")
-
-        group.add_argument("--no-css",
-                           dest="generate_css",
-                           action="store_false",
-                           default=os.environ.get('GLUE_GENERATE_CSS', True),
-                           help="Don't genereate CSS files.")
+    ]
 
     @classmethod
     def apply_parser_contraints(cls, parser, options):

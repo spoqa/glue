@@ -1,6 +1,8 @@
 import os
 
 from .css import CssFormat
+from base import Option
+
 
 class HtmlFormat(CssFormat):
 
@@ -31,17 +33,16 @@ class HtmlFormat(CssFormat):
             </body>
         </html>"""
 
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("Html format options")
-
-        group.add_argument("--html",
-                           dest="html_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_HTML', False),
-                           metavar='DIR',
-                           help="Generate html files and optionally where")
+    options_group = 'Html format options'
+    options = [
+        Option(
+            '--html',
+            dest='html_dir', type=Option.STORE_TRUE, environ='GLUE_HTML',
+            default=False,
+            metavar='DIR',
+            help='Generate html files and optionally where'
+        ),
+    ]
 
     @classmethod
     def apply_parser_contraints(cls, parser, options):

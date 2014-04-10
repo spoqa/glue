@@ -2,33 +2,31 @@ import os
 import json
 import codecs
 
-from base import BaseJSONFormat
+from base import BaseJSONFormat, Option
 
 
 class JSONFormat(BaseJSONFormat):
 
     extension = 'json'
     build_per_ratio = True
-
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("JSON format options")
-
-        group.add_argument("--json",
-                           dest="json_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_JSON', False),
-                           metavar='DIR',
-                           help="Generate JSON files and optionally where")
-
-        group.add_argument("--json-format",
-                   dest="json_format",
-                   metavar='NAME',
-                   type=unicode,
-                   default=os.environ.get('GLUE_JSON_FORMAT', 'array'),
-                    choices=['array', 'hash'],
-                   help=("JSON structure format (array, hash)"))
+    options_group = 'JSON format options'
+    options = [
+        Option(
+            '--json',
+            dest='json_dir', type=Option.STORE_TRUE, environ='GLUE_JSON',
+            default=False,
+            metavar='DIR',
+            help='Generate JSON files and optionally where'
+        ),
+        Option(
+            '--json-format',
+            dest='json_format', type=Option.REQUIRED, environ='GLUE_JSON_FORMAT',
+            choices=['array', 'hash'],
+            default='array',
+            metavar='NAME',
+            help='JSON structure format (array, hash)'
+        ),
+    ]
 
     def get_context(self, *args, **kwargs):
         context = super(JSONFormat, self).get_context(*args, **kwargs)

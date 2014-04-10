@@ -1,26 +1,26 @@
 import os
 
 from css import CssFormat
+from base import Option
 
 
 class ScssFormat(CssFormat):
 
     extension = 'scss'
-
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("SCSS format options")
-
-        group.add_argument("--scss",
-                           dest="scss_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_SCSS', False),
-                           metavar='DIR',
-                           help="Generate SCSS files and optionally where")
-
-        group.add_argument("--scss-template",
-                           dest="scss_template",
-                           default=os.environ.get('GLUE_SCSS_TEMPLATE', None),
-                           metavar='DIR',
-                           help="Template to use to generate the SCSS output.")
+    options_group = 'SCSS format options'
+    options = [
+        Option(
+            '--scss',
+            dest='scss_dir', type=Option.STORE_TRUE, environ='GLUE_SCSS',
+            default=False,
+            metavar='DIR',
+            help='Generate SCSS files and optionally where'
+        ),
+        Option(
+            '--scss-template',
+            dest='scss_template', type=Option.REQUIRED, environ='GLUE_SCSS_TEMPLATE',
+            default=None,
+            metavar='DIR',
+            help='Template to use to generate the SCSS output.'
+        ),
+    ]

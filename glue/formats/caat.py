@@ -1,24 +1,22 @@
 import os
 
-from base import BaseJSONFormat
+from base import BaseJSONFormat, Option
 
 
 class CAATFormat(BaseJSONFormat):
 
     extension = 'json'
     build_per_ratio = True
-
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("JSON format options")
-
-        group.add_argument("--caat",
-                           dest="caat_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_CAAT', False),
-                           metavar='DIR',
-                           help="Generate CAAT files and optionally where")
+    options_group = 'JSON format options'
+    options = [
+        Option(
+            '--caat',
+            dest='caat_dir', type=Option.STORE_TRUE, environ='GLUE_CAAT',
+            default=False,
+            metavar='DIR',
+            help='Generate CAAT files and optionally where'
+        ),
+    ]
 
     def get_context(self, *args, **kwargs):
         context = super(CAATFormat, self).get_context(*args, **kwargs)

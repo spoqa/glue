@@ -1,24 +1,22 @@
 import os
 
-from base import BasePlistFormat
+from base import BasePlistFormat, Option
 
 
 class Cocos2dFormat(BasePlistFormat):
 
     extension = 'plist'
     build_per_ratio = True
-
-    @classmethod
-    def populate_argument_parser(cls, parser):
-        group = parser.add_argument_group("Cocos2d format options")
-
-        group.add_argument("--cocos2d",
-                           dest="cocos2d_dir",
-                           nargs='?',
-                           const=True,
-                           default=os.environ.get('GLUE_COCOS2D', False),
-                           metavar='DIR',
-                           help="Generate Cocos2d files and optionally where")
+    options_group = 'Cocos2d format options'
+    options = [
+        Option(
+            '--cocos2d',
+            dest='cocos2d_dir', type=Option.STORE_TRUE, environ='GLUE_COCOS2D',
+            default=False,
+            metavar='DIR',
+            help='Generate Cocos2d files and optionally where'
+        ),
+    ]
 
     def get_context(self, ratio, *args, **kwargs):
         context = super(Cocos2dFormat, self).get_context(ratio, *args, **kwargs)
