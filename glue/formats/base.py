@@ -195,3 +195,48 @@ class JinjaTextFormat(BaseTextFormat):
             with open(self.sprite.config[custom_template_config]) as f:
                 template = f.read()
         return Template(textwrap.dedent(template).strip()).render(**context)
+
+
+class Option(object):
+
+    STORE_TRUE = 'store_true'
+    STORE_FALSE = 'store_false'
+    STORE_CONST = 'store_const'
+    OPTIONAL = 'optional'
+    REQUIRED = 'required'
+
+    DEFAULTS = {
+        STORE_TRUE: False,
+        STORE_FALSE: True,
+        REQUIRED: None,
+        OPTIONAL: None
+    }
+    NO_DEFAULT = object()
+
+    names = None
+    dest = None
+    type = None
+    const = None
+    choices = None
+    default = None
+    metavar = None
+    help = None
+
+    def __init__(self, names, dest, type,
+                 const=None, choices=None, default=NO_DEFAULT,
+                 environ=None, metavar=None, help=None):
+        self.names = (names,) if isinstance(names, basestring) else names
+        self.dest = dest
+        self.type = type
+        if self.const == self.STORE_FALSE:
+            self.const = False
+        else:
+            self.const = True
+        self.const = const
+        self.choices = choices
+        self.default = os.environ.get(
+            environ,
+            self.DEFAULTS[type] if default is self.NO_DEFAULT else default
+        )
+        self.metavar = metavar
+        self.help = str(help)
