@@ -51,7 +51,10 @@ setup(
     entry_points = {
         'console_scripts': [
             'glue = glue.bin:main',
-        ]
+        ],
+        'distutils.commands': [
+            'compile_sprite = glue.distcmd:compile_sprite',
+        ],
     },
     zip_safe = False
 )
