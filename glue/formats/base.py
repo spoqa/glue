@@ -26,20 +26,20 @@ class BaseFormat(object):
         group = parser.add_argument_group(cls.options_group)
 
         for option in cls.options:
-            if option.type in (Option.STORE_TRUE, Option.STORE_FALSE, Option.STORE_CONST):
+            if option.argtype in (Option.STORE_TRUE, Option.STORE_FALSE, Option.STORE_TRUE):
                 group.add_argument(*option.names,
                                    dest=option.dest,
-                                   action='store_const',
-                                   const=option.const,
+                                   action=option.argtype,
                                    default=option.default,
-                                   metavar=option.metavar,
                                    help=option.help)
             else:
                 group.add_argument(*option.names,
                                    dest=option.dest,
-                                   nargs=1 if option.type == Option.REQUIRED else '?',
-                                   type=unicode,
+                                   #nargs=1 if option.argtype == Option.REQUIRED else '?',
+                                   nargs='?',
+                                   const=option.const,
                                    default=option.default,
+                                   metavar=option.metavar,
                                    help=option.help)
 
     def output_dir(self, *args, **kwargs):
@@ -236,27 +236,31 @@ class Option(object):
     names = None
     dest = None
     type = None
+    argtype = None
     const = None
     choices = None
     default = None
     metavar = None
     help = None
 
-    def __init__(self, names, dest, type,
+    def __init__(self, names, dest, argtype, type=unicode,
                  const=None, choices=None, default=NO_DEFAULT,
                  environ=None, metavar=None, help=None):
         self.names = (names,) if isinstance(names, basestring) else names
         self.dest = dest
+        self.argtype = argtype
         self.type = type
+        '''
         if self.const == self.STORE_FALSE:
             self.const = False
         else:
             self.const = True
+        '''
         self.const = const
         self.choices = choices
         self.default = os.environ.get(
             environ,
-            self.DEFAULTS[type] if default is self.NO_DEFAULT else default
+            self.DEFAULTS[argtype] if default is self.NO_DEFAULT else default
         )
         self.metavar = metavar
         self.help = str(help)

@@ -33,14 +33,14 @@ class LessFormat(CssFormat):
     options = [
         Option(
             '--less',
-            dest='less_dir', type=Option.STORE_TRUE, environ='GLUE_LESS',
+            dest='less_dir', argtype=Option.STORE_TRUE, environ='GLUE_LESS',
             default=False,
             metavar='DIR',
             help='Generate LESS files and optionally where'
         ),
         Option(
             '--less-template',
-            dest='less_template', type=Option.REQUIRED, environ='GLUE_LESS_TEMPLATE',
+            dest='less_template', argtype=Option.REQUIRED, environ='GLUE_LESS_TEMPLATE',
             default=None,
             metavar='DIR',
             help='Template to use to generate the LESS output.'

@@ -44,50 +44,49 @@ class CssFormat(JinjaTextFormat):
     options = [
         Option(
             '--css',
-            dest='css_dir', type=Option.STORE_TRUE, environ='GLUE_CSS',
-            default=False,
-            metavar='DIR',
+            dest='css_dir', argtype=Option.REQUIRED, environ='GLUE_CSS',
+            default=False, metavar='DIR',
             help='Generate CSS files and optionally where'
         ),
         Option(
             '--namespace',
-            dest='css_namespace', type=Option.REQUIRED, environ='GLUE_CSS_NAMESPACE',
+            dest='css_namespace', argtype=Option.REQUIRED, environ='GLUE_CSS_NAMESPACE',
             default='sprite',
             help='Namespace for all css classes (default: sprite)'
         ),
         Option(
             '--sprite-namespace',
-            dest='css_sprite_namespace', type=Option.REQUIRED, environ='GLUE_CSS_SPRITE_NAMESPACE',
+            dest='css_sprite_namespace', argtype=Option.REQUIRED, environ='GLUE_CSS_SPRITE_NAMESPACE',
             default='{sprite_name}',
             help='Namespace for all sprites (default: {sprite_name})'
         ),
         Option(
             ('-u', '--url'),
-            dest='css_url', type=Option.REQUIRED, environ='GLUE_CSS_URL',
+            dest='css_url', argtype=Option.REQUIRED, environ='GLUE_CSS_URL',
             default='',
             help='Prepend this string to the sprites path'
         ),
         Option(
             '--cachebuster',
-            dest='css_cachebuster', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
+            dest='css_cachebuster', argtype=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
             default=False,
             help="Use the sprite's sha1 first 6 characters as a queryarg everytime that file is referred from the css"
         ),
         Option(
             '--cachebuster-filename',
-            dest='css_cachebuster_filename', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
+            dest='css_cachebuster_filename', argtype=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER',
             default=False,
             help="Append the sprite's sha first 6 characters to the output filename"
         ),
         Option(
             '--cachebuster-filename-only-sprites',
-            dest='css_cachebuster_only_sprites', type=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER_ONLY_SPRITES',
+            dest='css_cachebuster_only_sprites', argtype=Option.STORE_TRUE, environ='GLUE_CSS_CACHEBUSTER_ONLY_SPRITES',
             default=False,
             help='Only apply cachebuster to sprite images.'
         ),
         Option(
             '--separator',
-            dest='css_separator', type=Option.REQUIRED, environ='GLUE_CSS_SEPARATOR',
+            dest='css_separator', argtype=Option.REQUIRED, environ='GLUE_CSS_SEPARATOR',
             default='-',
             metavar='SEPARATOR',
             help=("Customize the separator used to join CSS class names."
@@ -95,7 +94,7 @@ class CssFormat(JinjaTextFormat):
         ),
         Option(
             '--pseudo-class-separator',
-            dest='css_pseudo_class_separator', type=Option.REQUIRED, environ='GLUE_CSS_PSEUDO_CLASS_SEPARATOR',
+            dest='css_pseudo_class_separator', argtype=Option.REQUIRED, environ='GLUE_CSS_PSEUDO_CLASS_SEPARATOR',
             default='__',
             metavar='SEPARATOR',
             help=('Customize the separator glue will use in order to'
@@ -103,14 +102,14 @@ class CssFormat(JinjaTextFormat):
         ),
         Option(
             '--css-template',
-            dest='css_template', type=Option.REQUIRED, environ='GLUE_CSS_TEMPLATE',
+            dest='css_template', argtype=Option.REQUIRED, environ='GLUE_CSS_TEMPLATE',
             default=None,
             metavar='DIR',
             help='Template to use to generate the CSS output.'
         ),
         Option(
             '--no-css',
-            dest='generate_css', type=Option.STORE_FALSE, environ='GLUE_GENERATE_CSS',
+            dest='generate_css', argtype=Option.STORE_FALSE, environ='GLUE_GENERATE_CSS',
             default=True,
             help="Don't genereate CSS files."
         ),

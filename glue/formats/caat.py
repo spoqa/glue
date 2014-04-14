@@ -11,7 +11,7 @@ class CAATFormat(BaseJSONFormat):
     options = [
         Option(
             '--caat',
-            dest='caat_dir', type=Option.STORE_TRUE, environ='GLUE_CAAT',
+            dest='caat_dir', argtype=Option.STORE_TRUE, environ='GLUE_CAAT',
             default=False,
             metavar='DIR',
             help='Generate CAAT files and optionally where'

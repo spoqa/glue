@@ -13,14 +13,14 @@ class JSONFormat(BaseJSONFormat):
     options = [
         Option(
             '--json',
-            dest='json_dir', type=Option.STORE_TRUE, environ='GLUE_JSON',
+            dest='json_dir', argtype=Option.STORE_TRUE, environ='GLUE_JSON',
             default=False,
             metavar='DIR',
             help='Generate JSON files and optionally where'
         ),
         Option(
             '--json-format',
-            dest='json_format', type=Option.REQUIRED, environ='GLUE_JSON_FORMAT',
+            dest='json_format', argtype=Option.REQUIRED, environ='GLUE_JSON_FORMAT',
             choices=['array', 'hash'],
             default='array',
             metavar='NAME',

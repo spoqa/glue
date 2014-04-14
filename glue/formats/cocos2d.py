@@ -11,7 +11,7 @@ class Cocos2dFormat(BasePlistFormat):
     options = [
         Option(
             '--cocos2d',
-            dest='cocos2d_dir', type=Option.STORE_TRUE, environ='GLUE_COCOS2D',
+            dest='cocos2d_dir', argtype=Option.STORE_TRUE, environ='GLUE_COCOS2D',
             default=False,
             metavar='DIR',
             help='Generate Cocos2d files and optionally where'

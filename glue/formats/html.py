@@ -37,7 +37,7 @@ class HtmlFormat(CssFormat):
     options = [
         Option(
             '--html',
-            dest='html_dir', type=Option.STORE_TRUE, environ='GLUE_HTML',
+            dest='html_dir', argtype=Option.STORE_TRUE, environ='GLUE_HTML',
             default=False,
             metavar='DIR',
             help='Generate html files and optionally where'

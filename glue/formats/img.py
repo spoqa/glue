@@ -16,50 +16,50 @@ class ImageFormat(BaseFormat):
     options = [
         Option(
             '--img',
-            dest='img_dir', type=Option.REQUIRED, environ='GLUE_IMG',
+            dest='img_dir', argtype=Option.REQUIRED, environ='GLUE_IMG',
             default=True,
             metavar='DIR',
             help='Output directory for img files'
         ),
         Option(
             '--no-img',
-            dest='generate_image', type=Option.STORE_FALSE, environ='GLUE_GENERATE_IMG',
+            dest='generate_image', argtype=Option.STORE_FALSE, environ='GLUE_GENERATE_IMG',
             default=True,
             help="Don't genereate IMG files."
         ),
         Option(
             ('-c', '--crop'),
-            dest='crop', type=Option.STORE_TRUE, environ='GLUE_CROP',
+            dest='crop', argtype=Option.STORE_TRUE, environ='GLUE_CROP',
             default=False,
             help='Crop images removing unnecessary transparent margins'
         ),
         Option(
             ('-p', '--padding'),
-            dest='padding', type=Option.REQUIRED, environ='GLUE_PADDING',
+            dest='padding', argtype=Option.REQUIRED, environ='GLUE_PADDING',
             default='0',
             help='Force this padding in all images'
         ),
         Option(
             '--margin',
-            dest='margin', type=Option.REQUIRED, environ='GLUE_MARGIN',
+            dest='margin', argtype=Option.REQUIRED, environ='GLUE_MARGIN',
             default='0',
             help='Force this margin in all images'
         ),
         Option(
             '--png8',
-            dest='png8', type=Option.STORE_TRUE, environ='GLUE_PNG8',
+            dest='png8', argtype=Option.STORE_TRUE, environ='GLUE_PNG8',
             default=False,
             help='The output image format will be png8 instead of png32'
         ),
         Option(
             '--ratios',
-            dest='ratios', type=Option.REQUIRED, environ='GLUE_RATIOS',
+            dest='ratios', argtype=Option.REQUIRED, environ='GLUE_RATIOS',
             default='1',
             help='Create sprites based on these ratios'
         ),
         Option(
             '--retina',
-            dest='ratios', type=Option.STORE_CONST, environ='GLUE_RETINA',
+            dest='ratios', argtype=Option.STORE_CONST, environ='GLUE_RETINA',
             const='2,1',
             default=False,
             help='Shortcut for --ratios=2,1'
